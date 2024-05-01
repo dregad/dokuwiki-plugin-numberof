@@ -19,7 +19,11 @@ class syntax_plugin_numberof extends DokuWiki_Syntax_Plugin {
 
     public function handle($match, $state, $pos, Doku_Handler $handler){
 	global $conf;
-        $list = array();
+        $list = array(
+            'file_count' => 0,
+            'dir_count' => 0,
+            'dir_nest' => 0,
+        );
         $data=0;
         $match=substr($match,10,-2);
         $matches = sexplode(">", $match, 2, '');
