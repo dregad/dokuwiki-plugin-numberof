@@ -22,7 +22,7 @@ class syntax_plugin_numberof extends DokuWiki_Syntax_Plugin {
         $list = array();
         $data=0;
         $match=substr($match,10,-2);
-        $matches=explode(">",$match);
+        $matches = sexplode(">", $match, 2, '');
         $matches[1]=str_replace(":","/",$matches[1]);
         switch ($matches[0]) {
             case "PAGES":
