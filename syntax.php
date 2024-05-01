@@ -24,27 +24,24 @@ class syntax_plugin_numberof extends DokuWiki_Syntax_Plugin {
             'dir_count' => 0,
             'dir_nest' => 0,
         );
-        $data=0;
         $match=substr($match,10,-2);
         $matches = sexplode(">", $match, 2, '');
         $matches[1]=str_replace(":","/",$matches[1]);
         switch ($matches[0]) {
             case "PAGES":
                 search($list,$conf['datadir'].$matches[1],array($this,'_search_count'),array('all'=>false),'');
-                $data = $list['file_count'];
                 break;
 
             case "MEDIAS":
                 search($list,$conf['mediadir'].$matches[1],array($this,'_search_count'),array('all'=>true));
-                $data    = $list['file_count'];
                 break;
           }
-        return $data;
+        return ['count' => $list['file_count']];
     }
 
     public function render($mode, Doku_Renderer $renderer, $data) {
         if($mode != 'xhtml') return false;
-        $renderer->doc.= $data;
+        $renderer->doc .= $data['count'];
         return true;
     }
 
