@@ -16,7 +16,7 @@ class syntax_plugin_numberof extends DokuWiki_Syntax_Plugin {
     public function connectTo($mode) {
       $this->Lexer->addSpecialPattern('\{\{NUMBEROF[^\}]*\}\}',$mode,'plugin_numberof');
     }
- 
+
     public function handle($match, $state, $pos, Doku_Handler $handler){
 	global $conf;
         $list = array();
@@ -29,7 +29,7 @@ class syntax_plugin_numberof extends DokuWiki_Syntax_Plugin {
                 search($list,$conf['datadir'].$matches[1],array($this,'_search_count'),array('all'=>false),'');
                 $data = $list['file_count'];
                 break;
-               
+
             case "MEDIAS":
                 search($list,$conf['mediadir'].$matches[1],array($this,'_search_count'),array('all'=>true));
                 $data    = $list['file_count'];
