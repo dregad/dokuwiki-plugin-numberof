@@ -16,31 +16,32 @@ class syntax_plugin_numberof extends DokuWiki_Syntax_Plugin {
     public function connectTo($mode) {
       $this->Lexer->addSpecialPattern('\{\{NUMBEROF[^\}]*\}\}',$mode,'plugin_numberof');
     }
- 
+
     public function handle($match, $state, $pos, Doku_Handler $handler){
 	global $conf;
-        $list = array();
-        $data=0;
+        $list = array(
+            'file_count' => 0,
+            'dir_count' => 0,
+            'dir_nest' => 0,
+        );
         $match=substr($match,10,-2);
-        $matches=explode(">",$match);
+        $matches = sexplode(">", $match, 2, '');
         $matches[1]=str_replace(":","/",$matches[1]);
         switch ($matches[0]) {
             case "PAGES":
                 search($list,$conf['datadir'].$matches[1],array($this,'_search_count'),array('all'=>false),'');
-                $data = $list['file_count'];
                 break;
-               
+
             case "MEDIAS":
                 search($list,$conf['mediadir'].$matches[1],array($this,'_search_count'),array('all'=>true));
-                $data    = $list['file_count'];
                 break;
           }
-        return $data;
+        return ['count' => $list['file_count']];
     }
 
     public function render($mode, Doku_Renderer $renderer, $data) {
         if($mode != 'xhtml') return false;
-        $renderer->doc.= $data;
+        $renderer->doc .= $data['count'];
         return true;
     }
 
